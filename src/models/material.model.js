@@ -7,19 +7,16 @@ const materialSchema = new Schema({
         required: true,
         unique: true,
         trim: true,
-        lowercase: true
     },
     technology: {
         type: String,
         required: true,
         trim: true,
-        lowercase: true
     },
     colors: {
         type: [String],
         required: true,
         trim: true,
-        lowercase: true
     },
     pricePerGram: {
         type: Number,
@@ -30,7 +27,7 @@ const materialSchema = new Schema({
         type: [String],
         required: true,
         trim: true,
-        lowercase: true
+
     },
     imageUrl: {
         type: String,

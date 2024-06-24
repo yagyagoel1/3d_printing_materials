@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { createNewMaterial, findMaterialByIdAndDelete, getMaterialById, getMaterialByName, getMaterials, updateMaterialById } from "../databases/material.database.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
@@ -17,7 +18,9 @@ const getAllMaterials = asyncHandler(async (req, res) => {
 });
 
 const createMaterial = asyncHandler(async (req, res) => {
-    const { name, technology, colors, pricePerGram, applicationTypes } = req.body;
+    let { name, technology, colors, pricePerGram, applicationTypes } = req.body;
+    colors = JSON.parse(colors);
+    applicationTypes = JSON.parse(applicationTypes);
     const validate = validateCreateMaterial({ name, technology, colors, pricePerGram: parseFloat(pricePerGram), applicationTypes });
     if (!validate.success) {
         return res.status(400).json(new ApiError(400, validate.error.errors[0].message));
@@ -61,7 +64,12 @@ const updateMaterial = asyncHandler(async (req, res) => {
     if (!material) {
         return res.status(404).json(new ApiError(404, "Material not found"));
     }
-    const { name, technology, colors, pricePerGram, applicationTypes } = req.body;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        console.error('Invalid ObjectId:', id);
+        return null;
+    }
+    let { name, technology, colors, pricePerGram, applicationTypes } = req.body;
+
     const validateMaterial = validateCreateMaterial({ name, technology, colors, pricePerGram: parseFloat(pricePerGram), applicationTypes });
     if (!validateMaterial.success) {
         return res.status(400).json(new ApiError(400, validateMaterial.error.errors[0].message));

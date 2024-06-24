@@ -19,7 +19,7 @@ export const getMaterialById = async (id) => {
     return material;
 }
 
-export const updateMaterialById = async ({ id, name, technology, colors, pricePerGram, applicationTypes, imageUrl }) => {
+export const updateMaterialById = async (id, { name, technology, colors, pricePerGram, applicationTypes, imageUrl }) => {
     const material = await Material.findByIdAndUpdate(id, { name, technology, colors, pricePerGram, applicationTypes, imageUrl }, { new: true }).select("-__v");
     return material;
 }
