@@ -1,3 +1,4 @@
+import { getMaterialById } from "../databases/material.database";
 import ApiError from "../utils/ApiError";
 import ApiResponse from "../utils/ApiResponse";
 import asyncHandler from "../utils/asyncHandler";
@@ -34,5 +35,16 @@ const createMaterial = asyncHandler(async (req, res) => {
     res.status(201).json(new ApiResponse(201, "Material created successfully", material));
 });
 
-
-export { getAllMaterials, createMaterial }
+const getMaterial = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const validate = validateObjectId(id);
+    if (!validate.success) {
+        return res.status(400).json(new ApiError(400, validate.error.errors[0].message));
+    }
+    const material = await getMaterialById(id);
+    if (!material) {
+        return res.status(404).json(new ApiError(404, "Material not found"));
+    }
+    res.status(200).json(new ApiResponse(200, "Material fetched successfully", material));
+});
+export { getAllMaterials, createMaterial, getMaterial }

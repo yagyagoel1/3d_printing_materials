@@ -1,5 +1,5 @@
 import express from 'express';
-import { createMaterial, getAllMaterials } from '../controllers/material.controller';
+import { createMaterial, getAllMaterials, getMaterial } from '../controllers/material.controller';
 import { upload } from '../middlewares/multer.middleware';
 
 
@@ -7,7 +7,7 @@ import { upload } from '../middlewares/multer.middleware';
 
 const router = express.Router();
 
-router.route('/').get(getAllMaterials).post(upload.single("Material Image"), createMaterial);
-
+router.route('/').get(getAllMaterials).post(upload.single("material_img"), createMaterial);
+router.route("/:id").get(getMaterial).put(updateMaterial).delete(deleteMaterial);
 
 export default router;

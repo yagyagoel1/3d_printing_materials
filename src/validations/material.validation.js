@@ -10,3 +10,9 @@ export const validateCreateMaterial = ({ name, technology, colors, pricePerGram,
     });
     return schema.safeParse({ name, technology, colors, pricePerGram, applicationTypes });
 }
+export const validateObjectId = (id) => {
+    const schema = z.object({
+        id: z.string().uuid()
+    });
+    return schema.safeParse({ id });
+}
