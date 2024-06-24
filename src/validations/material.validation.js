@@ -12,7 +12,7 @@ export const validateCreateMaterial = ({ name, technology, colors, pricePerGram,
 }
 export const validateObjectId = (id) => {
     const schema = z.object({
-        id: z.string().uuid()
+        id: z.string().min(5)
     });
     return schema.safeParse({ id });
 }

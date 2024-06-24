@@ -42,5 +42,8 @@ app.get(
     res.status(200).json({ message: "Is Healthy" });
   });
 
+import Router from "./routes/index.route.js";
+
+app.use("/api/v1", Router);
 
 export default app;

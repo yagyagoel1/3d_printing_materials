@@ -1,9 +1,9 @@
-import { getMaterialById } from "../databases/material.database";
-import ApiError from "../utils/ApiError";
-import ApiResponse from "../utils/ApiResponse";
-import asyncHandler from "../utils/asyncHandler";
-import { uploadOnCloudinary } from "../utils/cloudinary";
-import { validateCreateMaterial } from "../validations/material.validation";
+import { createNewMaterial, findMaterialByIdAndDelete, getMaterialById, getMaterialByName, getMaterials, updateMaterialById } from "../databases/material.database.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js";
+import asyncHandler from "../utils/asyncHandler.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { validateCreateMaterial, validateObjectId } from "../validations/material.validation.js";
 
 
 const getAllMaterials = asyncHandler(async (req, res) => {
@@ -18,9 +18,16 @@ const getAllMaterials = asyncHandler(async (req, res) => {
 
 const createMaterial = asyncHandler(async (req, res) => {
     const { name, technology, colors, pricePerGram, applicationTypes } = req.body;
-    const validate = validateCreateMaterial({ name, technology, colors, pricePerGram, applicationTypes });
+    console.log(colors)
+    console.log(applicationTypes)
+    console.log(parseFloat(pricePerGram))
+    const validate = validateCreateMaterial({ name, technology, colors, pricePerGram: parseFloat(pricePerGram), applicationTypes });
     if (!validate.success) {
         return res.status(400).json(new ApiError(400, validate.error.errors[0].message));
+    }
+    const materialExists = await getMaterialByName(name);
+    if (materialExists) {
+        return res.status(400).json(new ApiError(400, "Material already exists"));
     }
     const materialImage = req.file?.path;
     if (!materialImage) {
@@ -31,7 +38,7 @@ const createMaterial = asyncHandler(async (req, res) => {
         return res.status(500).json(new ApiError(500, "Error while uploading image"));
     }
 
-    const material = await createNewMaterial({ name, technology, colors, pricePerGram, applicationTypes, imageUrl: imageUrl.url });
+    const material = await createNewMaterial({ name, technology, colors, pricePerGram: parseFloat(pricePerGram), applicationTypes, imageUrl: imageUrl.url });
     res.status(201).json(new ApiResponse(201, "Material created successfully", material));
 });
 
@@ -58,7 +65,7 @@ const updateMaterial = asyncHandler(async (req, res) => {
         return res.status(404).json(new ApiError(404, "Material not found"));
     }
     const { name, technology, colors, pricePerGram, applicationTypes } = req.body;
-    const validateMaterial = validateCreateMaterial({ name, technology, colors, pricePerGram, applicationTypes });
+    const validateMaterial = validateCreateMaterial({ name, technology, colors, pricePerGram: parseFloat(pricePerGram), applicationTypes });
     if (!validateMaterial.success) {
         return res.status(400).json(new ApiError(400, validateMaterial.error.errors[0].message));
     }

@@ -1,6 +1,6 @@
 import express from 'express';
-import { createMaterial, deleteMaterial, getAllMaterials, getMaterial, updateMaterial } from '../controllers/material.controller';
-import { upload } from '../middlewares/multer.middleware';
+import { createMaterial, deleteMaterial, getAllMaterials, getMaterial, updateMaterial } from '../controllers/material.controller.js';
+import { upload } from '../middlewares/multer.middleware.js';
 
 
 

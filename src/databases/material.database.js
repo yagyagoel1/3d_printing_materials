@@ -1,4 +1,4 @@
-import { Material } from "../models/material.model";
+import { Material } from "../models/material.model.js";
 
 
 export const getMaterials = async (page) => {
@@ -10,14 +10,17 @@ export const createNewMaterial = async ({ name, technology, colors, pricePerGram
     await material.save();
     return material;
 }
-
+export const getMaterialByName = async (name) => {
+    const material = await Material.findOne({ name });
+    return material;
+}
 export const getMaterialById = async (id) => {
-    const material = await Material.findById(id);
+    const material = await Material.findById(id).select("-__v ");
     return material;
 }
 
 export const updateMaterialById = async ({ id, name, technology, colors, pricePerGram, applicationTypes, imageUrl }) => {
-    const material = await Material.findByIdAndUpdate(id, { name, technology, colors, pricePerGram, applicationTypes, imageUrl }, { new: true });
+    const material = await Material.findByIdAndUpdate(id, { name, technology, colors, pricePerGram, applicationTypes, imageUrl }, { new: true }).select("-__v");
     return material;
 }
 export const findMaterialByIdAndDelete = async (id) => {
