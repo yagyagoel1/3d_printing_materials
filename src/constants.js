@@ -1,1 +1,1 @@
-export const DB_NAME = "WORKO"
+export const DB_NAME = "IAMRAPID"
