@@ -18,9 +18,6 @@ const getAllMaterials = asyncHandler(async (req, res) => {
 
 const createMaterial = asyncHandler(async (req, res) => {
     const { name, technology, colors, pricePerGram, applicationTypes } = req.body;
-    console.log(colors)
-    console.log(applicationTypes)
-    console.log(parseFloat(pricePerGram))
     const validate = validateCreateMaterial({ name, technology, colors, pricePerGram: parseFloat(pricePerGram), applicationTypes });
     if (!validate.success) {
         return res.status(400).json(new ApiError(400, validate.error.errors[0].message));
