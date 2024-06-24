@@ -24,6 +24,7 @@ app.use(
     credentials: true, //to allow cookies from the client
   })
 );
+app.use(middleware);
 app.disable("x-powered-by");
 app.use(express.json({ limit: "50kb" }));
 app.use(express.urlencoded({ extended: true, limit: "50kb" }));
@@ -43,6 +44,7 @@ app.get(
   });
 
 import Router from "./routes/index.route.js";
+import { middleware } from "./utils/prometheus.js";
 
 app.use("/api/v1", Router);
 
