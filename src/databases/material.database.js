@@ -15,3 +15,8 @@ export const getMaterialById = async (id) => {
     const material = await Material.findById(id);
     return material;
 }
+
+export const updateMaterialById = async ({ id, name, technology, colors, pricePerGram, applicationTypes, imageUrl }) => {
+    const material = await Material.findByIdAndUpdate(id, { name, technology, colors, pricePerGram, applicationTypes, imageUrl }, { new: true });
+    return material;
+}
