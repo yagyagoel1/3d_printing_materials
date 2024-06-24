@@ -1,5 +1,5 @@
 import express from 'express';
-import { createMaterial, getAllMaterials, getMaterial, updateMaterial } from '../controllers/material.controller';
+import { createMaterial, deleteMaterial, getAllMaterials, getMaterial, updateMaterial } from '../controllers/material.controller';
 import { upload } from '../middlewares/multer.middleware';
 
 

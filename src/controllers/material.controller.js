@@ -77,4 +77,19 @@ const updateMaterial = asyncHandler(async (req, res) => {
     }
     res.status(200).json(new ApiResponse(200, "Material updated successfully", updatedMaterial));
 });
-export { getAllMaterials, createMaterial, getMaterial, updateMaterial }
+const deleteMaterial = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const validate = validateObjectId(id);
+    if (!validate.success) {
+        return res.status(400).json(new ApiError(400, validate.error.errors[0].message));
+    }
+    const material = await getMaterialById(id);
+    if (!material) {
+        return res.status(404).json(new ApiError(404, "Material not found"));
+    }
+    const deletedMaterial = await findMaterialByIdAndDelete(id);
+    res.status(200).json(new ApiResponse(200, "Material deleted successfully"));
+
+});
+
+export { getAllMaterials, createMaterial, getMaterial, updateMaterial, deleteMaterial }
