@@ -39,4 +39,4 @@ const materialSchema = new Schema({
 
 });
 
-const Material = mongoose.model('Material', materialSchema);
+export const Material = mongoose.model('Material', materialSchema);

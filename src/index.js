@@ -1,10 +1,12 @@
 import dotenv from "dotenv";
 import app from "./app.js";
 import connectDB from "./db/index.js";
+import { Logger } from "./utils/logger.js";
 
 dotenv.config({
   path: "./../.env",
 });
+export const logger = Logger();
 connectDB()
   .then(() => {
     try {
@@ -13,13 +15,13 @@ connectDB()
       });
       if (!process.env.TEST) {
         app.listen(process.env.PORT, () => {
-          console.log(`listening on port ${process.env.PORT}`);
+          logger.info(`listening on port ${process.env.PORT}`);
         });
       }
     } catch (error) {
-      console.error("error while listening ", error);
+      logger.error("error while listening ", error);
     }
   })
   .catch((error) => {
-    console.error("error while connecting to db ", error);
+    logger.error("error while connecting to db ", error);
   });
