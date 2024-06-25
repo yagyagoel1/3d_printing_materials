@@ -1,20 +1,22 @@
-
 FROM node:20-alpine
 
 # Create app directory
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json\
+# Copy package.json and package-lock.json
 COPY ./package*.json ./
 RUN npm install --only=production
 
-# Create a new user
+# Change ownership of the working directory
+RUN chown -R node:node /usr/src/app
+
+# Switch to the new user
 USER node
 
 # Copy built code from the previous stage
-COPY  --chown=node:node ./src ./src
-COPY  --chown=node:node ./.env ./
-
+COPY  ./src ./src
+COPY  ./.env ./
+COPY  ./public ./public
 # Expose the port
 EXPOSE 8000
 
