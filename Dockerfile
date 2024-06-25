@@ -13,7 +13,7 @@ RUN chown -R node:node /usr/src/app
 # Switch to the new user
 USER node
 
-# Copy built code from the previous stage
+# Copy directories
 COPY  ./src ./src
 COPY  ./.env ./
 COPY  ./public ./public
