@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
-import app from "../app.js"; // Adjust the path to your app.js file
+import app from "../app.js";
 import request from "supertest";
 import path from "path";
 import fs from "fs";
 import { beforeAll, afterAll, describe, it, expect } from "@jest/globals";
+import { Material } from "../models/material.model.js";
 let createdMaterialId;
 
 beforeAll(async () => {
@@ -11,6 +12,8 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await Material.deleteMany({});
+
   await mongoose.connection.db.dropDatabase();
   await mongoose.connection.close();
 });
@@ -51,7 +54,6 @@ describe("Material API", () => {
     expect(response.status).toBe(200);
     expect(response.body.data).toHaveProperty("name", "Test Material");
   });
-
   it("should update a material by ID without image", async () => {
     const updatedData = {
       name: "Updated Material",

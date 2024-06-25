@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import {
   createNewMaterial,
   findMaterialByIdAndDelete,
@@ -101,26 +100,24 @@ const updateMaterial = asyncHandler(async (req, res) => {
   if (!material) {
     return res.status(404).json(new ApiError(404, "Material not found"));
   }
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    console.error("Invalid ObjectId:", id);
-    return null;
-  }
+
   let { name, technology, colors, pricePerGram, applicationTypes } = req.body;
 
-  const validateMaterial = validateCreateMaterial({
-    name,
-    technology,
-    colors,
-    pricePerGram: parseFloat(pricePerGram),
-    applicationTypes,
-  });
-  if (!validateMaterial.success) {
-    return res
-      .status(400)
-      .json(new ApiError(400, validateMaterial.error.errors[0].message));
-  }
   let updatedMaterial;
   if (req.file) {
+    colors = JSON.parse(colors);
+    applicationTypes = JSON.parse(applicationTypes);
+
+    const validateMaterial = validateCreateMaterial({
+      name,
+      technology,
+      colors,
+      pricePerGram: parseFloat(pricePerGram),
+      applicationTypes,
+    });
+    if (!validateMaterial.success) {
+      return res.status(400).json(new ApiError(400, validateMaterial.error));
+    }
     const imageUrl = await uploadOnCloudinary(req.file.path);
     if (!imageUrl.url) {
       return res
@@ -137,6 +134,18 @@ const updateMaterial = asyncHandler(async (req, res) => {
       imageUrl: imageUrl.url,
     });
   } else {
+    const validateMaterial = validateCreateMaterial({
+      name,
+      technology,
+      colors,
+      pricePerGram: parseFloat(pricePerGram),
+      applicationTypes,
+    });
+    if (!validateMaterial.success) {
+      return res
+        .status(400)
+        .json(new ApiError(400, validateMaterial.error.errors[0].message));
+    }
     updatedMaterial = await updateMaterialById(id, {
       name,
       technology,
