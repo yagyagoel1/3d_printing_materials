@@ -5,7 +5,6 @@
 ## Table of Contents
 
 - [Setup and Installation](#setup-and-installation)
-- [Running the Server](#running-the-server)
 - [API Endpoints](#api-endpoints)
   - [Get All Materials](#get-all-materials)
   - [Create Material](#create-material)
