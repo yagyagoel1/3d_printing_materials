@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
 
-
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
@@ -31,17 +30,15 @@ app.use(express.urlencoded({ extended: true, limit: "50kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 app.use((err, req, res, next) => {
-  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-    return res.status(400).json({ message: 'Invalid JSON payload' });
+  if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
+    return res.status(400).json({ message: "Invalid JSON payload" });
   }
   next();
 });
 //health check route
-app.get(
-  "/",
-  (req, res) => {
-    res.status(200).json({ message: "Is Healthy" });
-  });
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Is Healthy" });
+});
 
 import Router from "./routes/index.route.js";
 import { middleware } from "./utils/prometheus.js";

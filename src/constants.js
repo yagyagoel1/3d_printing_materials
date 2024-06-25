@@ -1,1 +1,1 @@
-export const DB_NAME = "IAMRAPID"
+export const DB_NAME = "IAMRAPID";
