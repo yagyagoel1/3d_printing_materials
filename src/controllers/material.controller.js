@@ -124,7 +124,7 @@ const updateMaterial = asyncHandler(async (req, res) => {
         .status(500)
         .json(new ApiError(500, "Error while uploading image"));
     }
-
+    //await addUpdateOnCloudinaryJob({ localFilePath: req.file.path, imageUrl: material.imageUrl });
     updatedMaterial = await updateMaterialById(id, {
       name,
       technology,

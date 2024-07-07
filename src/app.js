@@ -37,7 +37,7 @@ app.use((err, req, res, next) => {
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Is Healthy" });
 });
-
+import("./utils/jobs/updatingOnCloudinary.js")
 import Router from "./routes/index.route.js";
 import { middleware } from "./utils/prometheus.js";
 

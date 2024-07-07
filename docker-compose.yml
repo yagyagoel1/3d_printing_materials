@@ -7,6 +7,7 @@ services:
     depends_on:
       - mongo
       - prometheus
+      - redis
     environment:
       - MONGODB_URL=mongodb://mongo:27017/
     networks:
@@ -25,7 +26,12 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - app-network
-
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
 networks:
   app-network:
     driver: bridge
