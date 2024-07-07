@@ -16,7 +16,7 @@ const uploadOnCloudinary = async (localFilePath) => {
         resource_type: "image",
       });
     } else {
-      response = { url: "test-url" };
+      response = { secure_url: "test-url" };
     }
     //file has been uploaded
     fs.unlinkSync(localFilePath);
@@ -32,7 +32,6 @@ const updateOnCloudinary = async (localFilePath, imageUrl) => {
     if (!localFilePath || !imageUrl) return null;
     let response;
     const publicId = imageUrl.split("/")[imageUrl.split("/").length - 1].split(".")[0];
-    console.log(publicId)
     if (!publicId) return null;
     if (!process.env.TEST) {
       response = await cloudinary.uploader.upload(localFilePath, {
@@ -41,7 +40,7 @@ const updateOnCloudinary = async (localFilePath, imageUrl) => {
         resource_type: "image",
       });
     } else {
-      response = { url: "test-url" };
+      response = { secure_url: "test-url" };
     }
     //file has been uploaded
     fs.unlinkSync(localFilePath);

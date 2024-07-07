@@ -20,7 +20,7 @@ afterAll(async () => {
 
 describe("Material API", () => {
   it("should create a new material", async () => {
-    const imagePath = path.join("src/tests/", "test_image.jpeg"); // Adjust the path to your image
+    const imagePath = path.join("src/tests/", "test_image.jpeg"); // my image path
 
     // Read the image file as a stream
     const imageStream = fs.createReadStream(imagePath);
@@ -53,6 +53,25 @@ describe("Material API", () => {
     );
     expect(response.status).toBe(200);
     expect(response.body.data).toHaveProperty("name", "Test Material");
+  });
+  it("should update the image of a new material", async () => {
+    const imagePath = path.join("src/tests/", "test_image.jpeg"); // my image path
+
+    // Read the image file as a stream
+    const imageStream = fs.createReadStream(imagePath);
+
+    // Make a POST request with the form data
+    const response = await request(app)
+      .put(`/api/v1/materials/${createdMaterialId}`)
+      .field("name", "Test Material")
+      .field("technology", "Test Technology")
+      .field("colors", JSON.stringify(["red", "blue"]))
+      .field("pricePerGram", "2.5")
+      .field("applicationTypes", JSON.stringify(["type1", "type2"]))
+      .attach("material_img", imageStream);
+
+    expect(response.status).toBe(200);
+    expect(response.body.data).toHaveProperty("imageUrl", "test-url");
   });
   it("should update a material by ID without image", async () => {
     const updatedData = {

@@ -65,7 +65,7 @@ const createMaterial = asyncHandler(async (req, res) => {
     colors,
     pricePerGram: parseFloat(pricePerGram),
     applicationTypes,
-    imageUrl: imageUrl.url,
+    imageUrl: imageUrl.secure_url,
   });
   res
     .status(201)
