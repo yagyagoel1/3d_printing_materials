@@ -17,7 +17,7 @@ router
 router
   .route("/:id")
   .get(getMaterial)
-  .put(updateMaterial)
+  .put(upload.single("material_img"), updateMaterial)
   .delete(deleteMaterial);
 
 export default router;
