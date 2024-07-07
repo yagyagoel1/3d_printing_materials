@@ -7,16 +7,17 @@ WORKDIR /usr/src/app
 COPY ./package*.json ./
 RUN npm install --only=production
 
-# Change ownership of the working directory
+# Copy directories
+COPY  ./src ./src
+COPY  ./.env ./
+COPY  ./public ./public
+
+# Change ownership of the working directory and its contents
 RUN chown -R node:node /usr/src/app
 
 # Switch to the new user
 USER node
 
-# Copy directories
-COPY  ./src ./src
-COPY  ./.env ./
-COPY  ./public ./public
 # Expose the port
 EXPOSE 8000
 

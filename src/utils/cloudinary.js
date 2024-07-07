@@ -27,5 +27,30 @@ const uploadOnCloudinary = async (localFilePath) => {
     return null;
   }
 };
+const updateOnCloudinary = async (localFilePath, imageUrl) => {
+  try {
+    if (!localFilePath || !imageUrl) return null;
+    let response;
+    const publicId = imageUrl.split("/")[imageUrl.split("/").length - 1].split(".")[0];
+    console.log(publicId)
+    if (!publicId) return null;
+    if (!process.env.TEST) {
+      response = await cloudinary.uploader.upload(localFilePath, {
+        public_id: publicId,
+        overwrite: true,
+        resource_type: "image",
+      });
+    } else {
+      response = { url: "test-url" };
+    }
+    //file has been uploaded
+    fs.unlinkSync(localFilePath);
+    return response;
+  } catch (error) {
+    logger.error("error while uploading image on cloudinary", error);
+    fs.unlinkSync(localFilePath); //remove the locally saved file as the operation got failed
+    return null;
+  }
+}
 
-export { uploadOnCloudinary };
+export { uploadOnCloudinary, updateOnCloudinary };
