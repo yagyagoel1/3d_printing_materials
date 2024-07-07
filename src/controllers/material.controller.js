@@ -9,7 +9,7 @@ import {
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { updateOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 import {
   validateCreateMaterial,
   validateObjectId,
@@ -53,7 +53,7 @@ const createMaterial = asyncHandler(async (req, res) => {
       .json(new ApiError(400, "Material image is required"));
   }
   const imageUrl = await uploadOnCloudinary(materialImage);
-  if (!imageUrl.url) {
+  if (!imageUrl.secure_url) {
     return res
       .status(500)
       .json(new ApiError(500, "Error while uploading image"));
@@ -118,8 +118,8 @@ const updateMaterial = asyncHandler(async (req, res) => {
     if (!validateMaterial.success) {
       return res.status(400).json(new ApiError(400, validateMaterial.error));
     }
-    const imageUrl = await uploadOnCloudinary(req.file.path);
-    if (!imageUrl.url) {
+    const imageUrl = await updateOnCloudinary(req.file.path, material.imageUrl);
+    if (!imageUrl.secure_url) {
       return res
         .status(500)
         .json(new ApiError(500, "Error while uploading image"));
