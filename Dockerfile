@@ -9,7 +9,7 @@ RUN npm install --only=production
 
 # Copy directories
 COPY  ./src ./src
-COPY  ./.env ./
+# COPY  ./.env ./
 COPY  ./public ./public
 
 # Change ownership of the working directory and its contents
